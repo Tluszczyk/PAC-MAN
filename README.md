@@ -6,3 +6,4 @@ Format: ![Alt Text](url)
 
 ## TODO:
 * graphics
+* hight score
