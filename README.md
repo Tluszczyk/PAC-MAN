@@ -5,5 +5,5 @@ Python pygame Back-Pan retro game python
 Format: ![Alt Text](url)
 
 ## TODO:
-* graphics
-* ~~hight score
+- [ ] graphics
+- [X] hight score
