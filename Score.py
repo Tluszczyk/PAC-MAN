@@ -14,6 +14,7 @@ class Score(pygame.sprite.Sprite):
 
         self.font = pygame.font.SysFont('Comic Sans', 30)
         self.textSurface = self.font.render(str(self.value), True, (255, 255, 255))
+        self.archive_score()
 
     def score_a_point(self):
         self.value += 1
@@ -28,15 +29,13 @@ class Score(pygame.sprite.Sprite):
             self.highest_score = self.value
 
     def archive_score(self):
-        scoreFR = open("/Users/tluszczyk/Desktop/Python/PycharmProjects/PAC-MAN/resources/highest_score", 'r')
-        scoreFW = open("/Users/tluszczyk/Desktop/Python/PycharmProjects/PAC-MAN/resources/highest_score", 'w')
-        hs=0
-        if len(scoreFR.read()) != 0:
-            hs = int(scoreFR.read()[0])
+        scoreF = open("/Users/tluszczyk/Desktop/Python/PycharmProjects/PAC-MAN/resources/highest_score", 'r+')
+        hs = int(scoreF.readlines()[-1])
         if hs < self.highest_score:
-            scoreFW.write(str(self.highest_score))
-        scoreFR.close()
-        scoreFW.close()
+            scoreF.write('\n'+str(self.highest_score))
+            scoreF.close()
+        else:
+            self.highest_score = hs
 
     def get_text_surface(self):
         return self.textSurface

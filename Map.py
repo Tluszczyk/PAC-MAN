@@ -14,8 +14,8 @@ class Map:
         self.pacManSpawnPoint = []
         self.blinkySpawnPoint = []
 
-        # bodyF = open("/Users/tluszczyk/Desktop/Python/PycharmProjects/PAC-MAN/resources/map", "r")
-        bodyF = open("/Users/tluszczyk/Desktop/Python/PycharmProjects/PAC-MAN/resources/test_map", "r")
+        bodyF = open("/Users/tluszczyk/Desktop/Python/PycharmProjects/PAC-MAN/resources/map", "r")
+        # bodyF = open("/Users/tluszczyk/Desktop/Python/PycharmProjects/PAC-MAN/resources/test_map", "r")
 
         self.pos = [0, 0]
 

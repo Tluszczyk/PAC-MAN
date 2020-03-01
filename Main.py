@@ -48,7 +48,6 @@ def game():
         for event in pygame.event.get():
             if stop or died:
                 menu.score_out.update_score(score.value, score.highest_score)
-                print(score.value, score.highest_score)
 
                 if event.type == pygame.MOUSEMOTION:
                     menu.start_button.set_mouse_pos(event.pos)
@@ -115,6 +114,20 @@ def game():
             pacMan.score(labirynt, score)
             pacMan.boost(labirynt, ghosts)
 
+        except:
+            break
+
+        for ghost in ghosts:
+            if pacMan.pos == ghost.pos:
+                if runSet.run:
+                    ghost.pos = ghost.INIT_POS
+                    score.score_ten_points()
+                else:
+                    menu.score_out.update_score(score.value, score.highest_score)
+                    score.archive_score()
+                    died = True
+
+        try:
                 #BLINKY
             blinky.addPacPos(pacMan.pos)
             blinky.move(labirynt)
@@ -157,6 +170,7 @@ def game():
 
         pygame.time.wait(1000 // FPS)
         clock.tick()
+
 
 while True:
     game()
