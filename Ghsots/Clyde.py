@@ -1,7 +1,7 @@
 import pygame
 import random
 from Directions import *
-from settings import blocksize
+from settings import blocksize, RunSettings
 
 class Clyde(pygame.sprite.Sprite):
     def __init__(self, pos):
@@ -13,27 +13,23 @@ class Clyde(pygame.sprite.Sprite):
 
         self.image = pygame.Surface(self.size)
         self.color = (255, 161, 0)
-        self.runColor = (53, 128, 46)
         self.image.fill(self.color)
         self.rect = self.image.get_rect()
 
         self.direction = UP
 
-        self.runTime = 0
-        self.maxRunTime = 5
-        self.run = False
+        self.runSet = None
+
+    def addRunSet(self, runSet):
+        self.runSet = runSet
+
+    def chase(self):
+        self.image.fill(self.color)
 
     def run_away(self):
-        self.run = True
-        self.runTime = pygame.time.get_ticks()
-        self.image.fill(self.runColor)
+        self.image.fill(self.runSet.runColor)
 
     def move(self, labirynt):
-        if self.run:
-            if pygame.time.get_ticks() - self.runTime >= 1000 * self.maxRunTime:
-                self.run = False
-                self.runTime = 0
-                self.image.fill(self.color)
 
         possible_moves = [RIGHT, DOWN, LEFT, UP]
         for wall in labirynt.walls:

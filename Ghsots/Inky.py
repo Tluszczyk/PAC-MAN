@@ -14,16 +14,16 @@ class Inky(pygame.sprite.Sprite):
 
         self.image = pygame.Surface(self.size)
         self.color = (0, 229, 255)
-        self.runColor = (53, 128, 46)
         self.image.fill(self.color)
         self.rect = self.image.get_rect()
 
         self.destination = []
         self.shortest_path = []
 
-        self.runTime = 0
-        self.maxRunTime = 5
-        self.run = False
+        self.runSet = None
+
+    def addRunSet(self, runSet):
+        self.runSet = runSet
 
     def chase_PacMan(self, pacPos, ghosts, labirynt):
         self.graph = Dijistra.create_graph(labirynt, ghosts)
@@ -55,17 +55,13 @@ class Inky(pygame.sprite.Sprite):
             self.pos[1] = labirynt.pos[1] + labirynt.size[1] - self.size[1]
 
     def run_away(self):
-        self.run = True
-        self.runTime = pygame.time.get_ticks()
-        self.image.fill(self.runColor)
+        self.image.fill(self.runSet.runColor)
+
+    def chase(self):
+        self.image.fill(self.color)
 
     def move(self, pacPos, ghosts, labirynt):
-        if self.run:
-            if pygame.time.get_ticks()-self.runTime >= 1000*self.maxRunTime:
-                self.run = False
-                self.runTime = 0
-                self.image.fill(self.color)
-
+        if self.runSet.run:
             self.move_at_random(labirynt)
             return
 

@@ -13,18 +13,18 @@ class Blinky(pygame.sprite.Sprite):
 
         self.image = pygame.Surface(self.size)
         self.color = (204, 33, 0)
-        self.runColor = (53, 128, 46)
         self.image.fill(self.color)
         self.rect = self.image.get_rect()
-
-        self.run = False
-        self.runTime = 0
-        self.maxRunTime = 5
 
         self.direction = UP
 
         self.positions2B = []
         self.onTrack = False
+
+        self.runSet = None
+
+    def addRunSet(self, runSet):
+        self.runSet = runSet
 
     def addPacPos(self, pos):
         if len(self.positions2B) == 0 or self.positions2B[-1] != pos:
@@ -37,20 +37,16 @@ class Blinky(pygame.sprite.Sprite):
             self.positions2B = self.positions2B[lastIndex+1:]
 
     def run_away(self):
-        self.run = True
-        self.runTime = pygame.time.get_ticks()
-        self.image.fill(self.runColor)
+        self.image.fill(self.runSet.runColor)
+
+    def chase(self):
+        self.image.fill(self.color)
 
     def move(self, labirynt):
-        if self.run:
-            if pygame.time.get_ticks()-self.runTime >= 1000 * self.maxRunTime:
-                self.run = False
-                self.runTime = 0
-                self.image.fill(self.color)
-        else:
+        if not self.runSet.run:
             self.checkIfOnTrack()
 
-        if not self.onTrack or self.run:
+        if not self.onTrack or self.runSet.run:
             possible_moves = [RIGHT, DOWN, LEFT, UP]
             for wall in labirynt.walls:
                 if [self.pos[0]-self.size[0], self.pos[1]] == wall.pos: possible_moves.remove(LEFT)

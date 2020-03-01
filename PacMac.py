@@ -1,6 +1,6 @@
 import pygame
 from Directions import *
-from settings import blocksize
+from settings import blocksize, RunSettings
 
 class PacMan(pygame.sprite.Sprite):
     def __init__(self, pos, resolution):
@@ -18,6 +18,10 @@ class PacMan(pygame.sprite.Sprite):
 
         self.nextDircextion = STOP
 
+        self.runSet = None
+
+    def addRunSet(self, runSet):
+        self.runSet = runSet
 
     def set_pos(self, pos):
         self.pos = pos
@@ -50,7 +54,7 @@ class PacMan(pygame.sprite.Sprite):
         i=0
         for point in labirynt.points:
             if pygame.Rect(self.pos, self.size).collidepoint(point.pos):
-                score.scoreAPoint()
+                score.score_a_point()
                 labirynt.points.pop(i)
             i+=1
 
@@ -58,8 +62,18 @@ class PacMan(pygame.sprite.Sprite):
         i=0
         for boost in labirynt.boosts:
             if pygame.Rect(self.pos, self.size).collidepoint(boost.pos):
+                self.runSet.runTime = pygame.time.get_ticks()
+                self.runSet.run = True
+
                 for ghost in ghosts:
                     ghost.run_away()
 
                 labirynt.boosts.pop(i)
             i+=1
+
+        if self.runSet.run:
+            if pygame.time.get_ticks() - self.runSet.runTime >= 1000 * self.runSet.maxRunTime:
+                self.runSet.run = False
+                self.runSet.runTime = 0
+                for ghost in ghosts:
+                    ghost.chase()

@@ -12,3 +12,11 @@ image.fill((0, 0, 0))
 FPS = 3
 
 clock = pg.time.Clock()
+
+
+class RunSettings:
+    def __init__(self, t, m, r, c):
+        self.runTime = t
+        self.maxRunTime = m
+        self.run = r
+        self.runColor = c
